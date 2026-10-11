@@ -657,7 +657,7 @@ h6 {
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 480px;
+  table-layout: fixed;
 }
 
 th,
@@ -666,7 +666,7 @@ td {
   padding: 14px 20px;
   border-bottom: 1px solid var(--border);
   font-size: 14.5px;
-  white-space: nowrap;
+  word-break: break-word;
 }
 
 th {
@@ -690,6 +690,175 @@ td:last-child,
 th:last-child {
   color: var(--accent);
   font-weight: 700;
+}
+
+/* Assembly */
+.assembly {
+  padding-top: 110px;
+}
+
+@media (max-width: 768px) {
+  .assembly {
+    padding-top: 72px;
+  }
+}
+
+.assembly__track {
+  position: relative;
+  height: 360vh;
+  margin-top: 56px;
+}
+
+.assembly__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(90deg, rgba(245, 246, 248, .035) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(0deg, rgba(245, 246, 248, .035) 0 1px, transparent 1px 64px),
+    radial-gradient(ellipse at 50% 70%, rgba(255, 106, 57, .12), transparent 60%),
+    var(--bg);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.assembly__stage::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14%;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, var(--accent) 0 24px, transparent 24px 48px);
+  opacity: .35;
+  animation: conveyor-move 1.4s linear infinite;
+}
+
+@keyframes conveyor-move {
+  to {
+    background-position: -48px 0;
+  }
+}
+
+.assembly__hud {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+}
+
+.assembly__hud-bar {
+  width: clamp(140px, 24vw, 220px);
+  height: 6px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.assembly__hud-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: inherit;
+}
+
+.assembly__hud-pct {
+  color: var(--accent);
+  min-width: 3ch;
+}
+
+.assembly__car {
+  position: relative;
+  z-index: 1;
+  width: min(86vw, 760px);
+  height: auto;
+}
+
+.car-part {
+  opacity: var(--pp, 0);
+  will-change: transform, opacity;
+}
+
+.car-shadow {
+  fill: rgba(0, 0, 0, .45);
+}
+
+.car-part[data-part="chassis"] {
+  transform: translateY(calc((1 - var(--pp, 0)) * 150px));
+}
+
+.car-part[data-part="wheel-rear"],
+.car-part[data-part="wheel-front"] {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: translateY(calc((1 - var(--pp, 0)) * -240px)) rotate(calc((1 - var(--pp, 0)) * -280deg));
+}
+
+.car-part[data-part="body"] {
+  transform: translateY(calc((1 - var(--pp, 0)) * -200px));
+}
+
+.car-part[data-part="cabin"] {
+  transform: translateY(calc((1 - var(--pp, 0)) * -170px));
+}
+
+.car-part[data-part="windows"] {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(calc(.7 + var(--pp, 0) * .3));
+}
+
+.car-part[data-part="bumper-front"] {
+  transform: translateX(calc((1 - var(--pp, 0)) * -130px));
+}
+
+.car-part[data-part="bumper-rear"] {
+  transform: translateX(calc((1 - var(--pp, 0)) * 130px));
+}
+
+.car-part[data-part="light-front"],
+.car-part[data-part="light-rear"],
+.car-part[data-part="mirror"],
+.car-part[data-part="exhaust"] {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(var(--pp, 0));
+}
+
+.car-shine {
+  mix-blend-mode: overlay;
+  transform: translateX(calc(var(--pp, 0) * 1050px));
+}
+
+.assembly__done {
+  margin-top: 24px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--accent);
+  opacity: var(--pp, 0);
+  transform: translateY(calc((1 - var(--pp, 0)) * 10px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .assembly__track {
+    height: auto;
+  }
+
+  .assembly__stage {
+    position: relative;
+  }
 }
 
 /* Gallery */
